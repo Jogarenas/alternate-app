@@ -1005,28 +1005,28 @@ const HomePage = ({setPage,onAnalyze,loading,result}) => {
   const [iRef,iVis]=useVis(.1);
   return (
     <div>
-      <section style={{position:"relative",minHeight:"100vh",display:"flex",alignItems:"center",
+      <section style={{position:"relative",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",
         padding:"100px clamp(16px,5vw,72px) 60px",overflow:"hidden",background:"var(--cream)"}}>
         <HeroBg/>
-        <div style={{maxWidth:1040,margin:"0 auto",width:"100%",position:"relative",zIndex:1,
-          display:"grid",gridTemplateColumns:"1fr 1fr",gap:56,alignItems:"center"}}>
+        <div style={{maxWidth:640,margin:"0 auto",width:"100%",position:"relative",zIndex:1,
+          display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <div>
             <div style={{animation:"fadeUp .7s .05s both"}}><Pill size="md">AI-Powered Meal Analysis</Pill></div>
             <h1 style={{fontWeight:800,fontSize:"clamp(38px,5vw,66px)",lineHeight:1.06,letterSpacing:"-.03em",
               marginTop:20,marginBottom:22,animation:"fadeUp .7s .15s both"}}>
               Eat what you love.<br/><span style={{color:"var(--forest-l)"}}>Eat it smarter.</span>
             </h1>
-            <p style={{fontSize:16,color:"var(--ink-2)",lineHeight:1.75,maxWidth:440,marginBottom:34,
+            <p style={{fontSize:16,color:"var(--ink-2)",lineHeight:1.75,maxWidth:440,marginBottom:34,marginLeft:"auto",marginRight:"auto",
               animation:"fadeUp .7s .25s both"}}>
               Type any food, drink, or meal. Get a practical AI analysis and 3 smarter alternatives — without the lecture.
             </p>
-            <div style={{display:"flex",gap:12,flexWrap:"wrap",animation:"fadeUp .7s .35s both"}}>
+            <div style={{display:"flex",gap:12,flexWrap:"wrap",justifyContent:"center",animation:"fadeUp .7s .35s both"}}>
               <Btn onClick={()=>setPage("app")}>Analyze a Meal</Btn>
               <Btn variant="ghost" onClick={()=>document.getElementById("how")?.scrollIntoView({behavior:"smooth"})}>
                 How it works ↓
               </Btn>
             </div>
-            <div style={{display:"flex",gap:28,marginTop:38,paddingTop:28,borderTop:"1px solid var(--cream-d)",animation:"fadeUp .7s .45s both"}}>
+            <div style={{display:"flex",gap:28,marginTop:38,paddingTop:28,borderTop:"1px solid var(--cream-d)",justifyContent:"center",animation:"fadeUp .7s .45s both"}}>
               {[["350 kcal","avg daily reduction"],["3×","more protein possible"],["78%","love the taste too"]].map(([n,l])=>(
                 <div key={n}>
                   <div style={{fontWeight:800,fontSize:22,color:"var(--forest-l)",lineHeight:1}}>{n}</div>
@@ -1035,10 +1035,10 @@ const HomePage = ({setPage,onAnalyze,loading,result}) => {
               ))}
             </div>
           </div>
-          <div style={{animation:"fadeUp .7s .2s both"}}>
-            <MealInputCard onAnalyze={onAnalyze} loading={loading}/>
-            {result&&<div style={{marginTop:18}}><ResultsView result={result} canSave={false} isDemo onSave={()=>{}}/></div>}
-          </div>
+        </div>
+        <div style={{maxWidth:520,margin:"0 auto",width:"100%",position:"relative",zIndex:1,marginTop:48,animation:"fadeUp .7s .2s both"}}>
+          <MealInputCard onAnalyze={onAnalyze} loading={loading}/>
+          {result&&<div style={{marginTop:18}}><ResultsView result={result} canSave={false} isDemo onSave={()=>{}}/></div>}
         </div>
       </section>
 
