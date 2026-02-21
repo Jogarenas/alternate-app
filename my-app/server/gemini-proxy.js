@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
@@ -8,7 +9,7 @@ const app = express();
 app.use(bodyParser.json({ limit: '1mb' }));
 
 const PORT = process.env.PORT || 5174;
-const GEMINI_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').trim();
 if (!GEMINI_KEY) {
   console.warn('Warning: GEMINI_API_KEY not set. The proxy will reject requests.');
 }
@@ -17,8 +18,7 @@ app.post('/api/gemini', async (req, res) => {
   if (!GEMINI_KEY) return res.status(500).json({ error: 'Server misconfigured: GEMINI_API_KEY missing' });
   try {
     const { model, system, prompt, responseMimeType, maxTokens } = req.body;
-    // Gemini API (Google AI) uses generativelanguage.googleapis.com and x-goog-api-key
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(GEMINI_KEY)}`;
     const requestBody = {
       contents: [{
         role: 'user',
@@ -26,8 +26,8 @@ app.post('/api/gemini', async (req, res) => {
       }],
       generationConfig: {
         temperature: 0.2,
-        maxOutputTokens: maxTokens || 1024,
-        ...(responseMimeType && { responseMimeType })
+        max_output_tokens: maxTokens || 1024,
+        ...(responseMimeType && { response_mime_type: responseMimeType })
       }
     };
     if (system) {

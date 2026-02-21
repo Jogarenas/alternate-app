@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start:proxy": "node server/gemini-proxy.cjs"
+    "start:proxy": "node server/gemini-proxy.cjs",
+    "test:gemini": "node scripts/test-gemini.cjs"
   },
   "dependencies": {
     "body-parser": "^2.2.2",

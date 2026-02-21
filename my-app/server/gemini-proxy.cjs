@@ -27,8 +27,8 @@ app.post('/api/gemini', async (req, res) => {
       }],
       generationConfig: {
         temperature: 0.2,
-        maxOutputTokens: maxTokens || 1024,
-        ...(responseMimeType && { responseMimeType })
+        max_output_tokens: maxTokens || 1024,
+        ...(responseMimeType && { response_mime_type: responseMimeType })
       }
     };
     if (system) {
