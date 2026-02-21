@@ -13,4 +13,22 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 ## Expanding the ESLint configuration
 
+## Gemini proxy (local development)
+
+This project includes a small Express proxy at `server/gemini-proxy.js` that forwards requests to the Google Generative API (Gemini).
+
+Setup:
+
+1. Create an environment variable with your server-side API key:
+
+	- macOS / zsh: `export GEMINI_API_KEY="ya29.your_key_here"`
+
+2. Start the proxy:
+
+	- From `my-app` folder: `npm run start:proxy`
+
+3. In development the React app can call `/api/gemini` (client-side code is already wired to that endpoint).
+
+Security: Keep `GEMINI_API_KEY` secret and do not commit it to source control. Use a proper serverless function in production rather than this dev proxy.
+
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
