@@ -19,9 +19,9 @@ This project includes a small Express proxy at `server/gemini-proxy.js` that for
 
 Setup:
 
-1. Create an environment variable with your server-side API key (do NOT put this in client code):
+1. Create an environment variable with your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey) (do NOT put this in client code). The key usually starts with `AIza`.
 
-	- macOS / zsh: `export GEMINI_API_KEY="ya29.your_key_here"`
+	- macOS / zsh: `export GEMINI_API_KEY="AIza...your_key_here"`
 
 2. Start the local proxy (in a separate terminal):
 

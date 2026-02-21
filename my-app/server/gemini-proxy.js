@@ -17,40 +17,40 @@ app.post('/api/gemini', async (req, res) => {
   if (!GEMINI_KEY) return res.status(500).json({ error: 'Server misconfigured: GEMINI_API_KEY missing' });
   try {
     const { model, system, prompt, responseMimeType, maxTokens } = req.body;
-    // Build request for Google's Generative API (REST endpoint)
-    // This proxy expects the model name like "gemini-2.5-flash-preview-05-20" and returns text output.
-    const endpoint = `https://generative.googleapis.com/v1/models/${encodeURIComponent(model)}/generate`;
-    const body = {
-      temperature: 0.2,
-      maxOutputTokens: maxTokens || 1024,
-      // Pass helpful context inside "prompt"
-      prompt: {
-        text: `${system}\n\n${prompt}`
+    // Gemini API (Google AI) uses generativelanguage.googleapis.com and x-goog-api-key
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+    const requestBody = {
+      contents: [{
+        role: 'user',
+        parts: [{ text: system ? `${system}\n\n${prompt}` : prompt }]
+      }],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: maxTokens || 1024,
+        ...(responseMimeType && { responseMimeType })
       }
     };
+    if (system) {
+      requestBody.systemInstruction = { parts: [{ text: system }] };
+      requestBody.contents[0].parts[0].text = prompt;
+    }
 
     const r = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GEMINI_KEY}`
+        'x-goog-api-key': GEMINI_KEY
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(requestBody)
     });
     if (!r.ok) {
-      const errBody = await r.text().catch(()=>null);
+      const errBody = await r.text().catch(() => null);
       return res.status(r.status).json({ error: `Gemini error: ${r.status} ${errBody}` });
     }
     const data = await r.json();
-    // coerce output to a single text blob
     let text = '';
-    if (data?.candidates && Array.isArray(data.candidates)) {
-      text = data.candidates.map(c=>c?.output?.[0]?.content?.text||c?.content||'').join('\n');
-    } else if (data?.output?.[0]?.content) {
-      // Some versions return output directly
-      const contents = data.output[0].content;
-      if (Array.isArray(contents)) text = contents.map(c=>c.text||'').join('');
-      else text = contents.text || JSON.stringify(contents);
+    if (data?.candidates?.[0]?.content?.parts) {
+      text = data.candidates[0].content.parts.map(p => p.text || '').join('');
     } else {
       text = JSON.stringify(data);
     }
