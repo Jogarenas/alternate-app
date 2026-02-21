@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+const appRoot = require('path').join(__dirname, '..');
+require('dotenv').config({ path: require('path').join(appRoot, '.env') });
+require('dotenv').config({ path: require('path').join(appRoot, '.env.local'), override: true });
 const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
@@ -9,7 +11,7 @@ const app = express();
 app.use(bodyParser.json({ limit: '1mb' }));
 
 const PORT = process.env.PORT || 5174;
-const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').trim();
+const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').replace(/^\uFEFF/, '').trim();
 if (!GEMINI_KEY) {
   console.warn('Warning: GEMINI_API_KEY not set. The proxy will reject requests.');
 }

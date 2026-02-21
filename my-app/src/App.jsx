@@ -1716,11 +1716,11 @@ const AuthPage = ({onAuth,setPage}) => {
 const Toast = ({message,onClose}) => (
   <div style={{position:"fixed",bottom:24,left:"50%",transform:"translateX(-50%)",
     zIndex:500,background:"var(--ink)",color:"var(--white)",padding:"12px 20px",borderRadius:"var(--rad-p)",
-    fontSize:13,fontWeight:600,boxShadow:"var(--sh-l)",display:"flex",alignItems:"center",gap:12,
-    animation:"toastIn .3s var(--ease) both",whiteSpace:"nowrap",maxWidth:"90vw"}}>
+    fontSize:13,fontWeight:600,boxShadow:"var(--sh-l)",display:"flex",alignItems:"flex-start",gap:12,
+    animation:"toastIn .3s var(--ease) both",maxWidth:"90vw",maxHeight:"40vh",overflow:"auto",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
     <span style={{color:"var(--red-s)"}}>⚠</span>
-    {message}
-    <button onClick={onClose} style={{background:"none",border:"none",color:"rgba(255,255,255,.5)",cursor:"pointer",fontSize:16,lineHeight:1,padding:"0 2px"}}>×</button>
+    <span style={{flex:1}}>{message}</span>
+    <button onClick={onClose} style={{background:"none",border:"none",color:"rgba(255,255,255,.5)",cursor:"pointer",fontSize:16,lineHeight:1,padding:"0 2px",flexShrink:0}}>×</button>
   </div>
 );
 

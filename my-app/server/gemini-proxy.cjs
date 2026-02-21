@@ -1,17 +1,24 @@
 #!/usr/bin/env node
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+const path = require('path');
+const appRoot = path.join(__dirname, '..');
+// Load .env then .env.local (local overrides); try both so key works from either file
+require('dotenv').config({ path: path.join(appRoot, '.env') });
+require('dotenv').config({ path: path.join(appRoot, '.env.local'), override: true });
+
 const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 const app = express();
 app.use(bodyParser.json({ limit: '1mb' }));
 
 const PORT = process.env.PORT || 5174;
-const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').trim();
+// Trim and strip BOM so key from file is valid
+const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').replace(/^\uFEFF/, '').trim();
 if (!GEMINI_KEY) {
-  console.warn('Warning: GEMINI_API_KEY not set. The proxy will reject requests.');
+  console.warn('Warning: GEMINI_API_KEY not set. Check my-app/.env.local (or .env) and restart the proxy.');
+} else {
+  console.log('GEMINI_API_KEY loaded (%d chars).', GEMINI_KEY.length);
 }
 
 app.post('/api/gemini', async (req, res) => {
@@ -46,7 +53,12 @@ app.post('/api/gemini', async (req, res) => {
     });
     if (!r.ok) {
       const errBody = await r.text().catch(() => null);
-      return res.status(r.status).json({ error: `Gemini error: ${r.status} ${errBody}` });
+      let errMessage = `Gemini error: ${r.status} ${errBody}`;
+      try {
+        const errJson = errBody ? JSON.parse(errBody) : null;
+        if (errJson?.error?.message) errMessage = errJson.error.message;
+      } catch (_) {}
+      return res.status(r.status).json({ error: errMessage });
     }
     const data = await r.json();
     let text = '';

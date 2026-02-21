@@ -4,14 +4,16 @@
  * Usage: from my-app folder, run: node scripts/test-gemini.cjs
  */
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+const appRoot = path.join(__dirname, '..');
+require('dotenv').config({ path: path.join(appRoot, '.env') });
+require('dotenv').config({ path: path.join(appRoot, '.env.local'), override: true });
 
 const PROXY_URL = 'http://localhost:5174/api/gemini';
 
 async function main() {
-  const key = (process.env.GEMINI_API_KEY || '').trim();
+  const key = (process.env.GEMINI_API_KEY || '').replace(/^\uFEFF/, '').trim();
   if (!key) {
-    console.error('Missing GEMINI_API_KEY in .env');
+    console.error('Missing GEMINI_API_KEY. Add it to my-app/.env.local (e.g. GEMINI_API_KEY=AIza...)');
     process.exit(1);
   }
   console.log('Key loaded (length %d). Calling proxy at %s ...', key.length, PROXY_URL);

@@ -19,9 +19,10 @@ This project includes a small Express proxy at `server/gemini-proxy.js` that for
 
 Setup:
 
-1. Create an environment variable with your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey) (do NOT put this in client code). The key usually starts with `AIza`.
+1. Create `my-app/.env.local` with your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey) (do NOT put this in client code). The key usually starts with `AIza`.
 
-	- macOS / zsh: `export GEMINI_API_KEY="AIza...your_key_here"`
+	- In `my-app/.env.local`: `GEMINI_API_KEY=AIza...your_key_here`
+	- Or in shell: `export GEMINI_API_KEY="AIza...your_key_here"`
 
 2. Start the local proxy (in a separate terminal):
 
@@ -35,7 +36,7 @@ Setup:
 
 	Vite dev server is configured to proxy `/api/gemini` to the local proxy on port 5174.
 
-If you see a 500 response with `Server misconfigured: GEMINI_API_KEY missing`, set the `GEMINI_API_KEY` env var before starting the proxy.
+If you see a 500 response with `Server misconfigured: GEMINI_API_KEY missing`, add `GEMINI_API_KEY` to `.env.local` or set the env var before starting the proxy.
 
 Security: Keep `GEMINI_API_KEY` secret and do not commit it to source control. For production, implement a serverless endpoint (Vercel/Netlify/AWS Lambda) that stores the key securely.
 
