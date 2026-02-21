@@ -24,17 +24,13 @@ Setup:
 	- In `my-app/.env.local`: `GEMINI_API_KEY=AIza...your_key_here`
 	- Or in shell: `export GEMINI_API_KEY="AIza...your_key_here"`
 
-2. Start the local proxy (in a separate terminal):
+2. Start the app (proxy + dev server in one command):
 
-	- From `my-app` folder: `npm run start:proxy`
+	- From `my-app` folder: `npm run dev`
 
-	The proxy will listen on http://localhost:5174 and will respond to POST /api/gemini.
+	This starts both the Gemini proxy (http://localhost:5174) and the Vite dev server. You only need one terminal.
 
-3. Start the React dev server:
-
-	- `npm run dev`
-
-	Vite dev server is configured to proxy `/api/gemini` to the local proxy on port 5174.
+	Optional: to run them separately, use `npm run start:proxy` in one terminal and `npm run dev:vite` in another.
 
 If you see a 500 response with `Server misconfigured: GEMINI_API_KEY missing`, add `GEMINI_API_KEY` to `.env.local` or set the env var before starting the proxy.
 
