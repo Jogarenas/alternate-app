@@ -15,7 +15,7 @@
  *  │   3. Call Gemini 2.5 Flash:                                   │
  *  │      // Use your preferred AI SDK (server-side only)           │
  *  │      // Initialize with process.env.GEMINI_KEY                  │
- *  │      const model = "gemini-2.5-flash-preview-05-20";         │
+ *  │      const model = "gemini-2.5-flash";         │
  *  │      const response = await ai.models.generateContent({       │
  *  │        model, contents: userPrompt,                           │
  *  │        config: { systemInstruction: ANALYZE_SYSTEM_PROMPT,    │
@@ -187,11 +187,11 @@ Return ONLY the JSON object.`;
 // The proxy is responsible for holding the GEMINI API key (DO NOT put keys in client-side code).
 const callAI = async (systemPrompt, userPrompt, opts = {}) => {
   const payload = {
-    model: opts.model || "gemini-2.0-flash",
+    model: opts.model || "gemini-2.5-flash-lite",  // flash-lite is fastest for low latency
     system: systemPrompt,
     prompt: userPrompt,
     responseMimeType: opts.responseMimeType || "application/json",
-    maxTokens: opts.maxTokens || 4000,
+    maxTokens: opts.maxTokens || 2048,  // enough for full JSON; 1024 can truncate
   };
 
   const res = await fetch("/api/gemini", {

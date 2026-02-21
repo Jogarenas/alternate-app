@@ -19,7 +19,7 @@ async function main() {
   console.log('Key loaded (length %d). Calling proxy at %s ...', key.length, PROXY_URL);
 
   const payload = {
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     system: 'You are a helpful assistant. Reply in one short sentence.',
     prompt: 'Say "Gemini is working" and nothing else.',
     maxTokens: 64,
