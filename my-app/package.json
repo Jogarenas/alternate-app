@@ -8,10 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-  "start:proxy": "node server/gemini-proxy.cjs"
+    "start:proxy": "node server/gemini-proxy.cjs"
   },
   "dependencies": {
     "body-parser": "^2.2.2",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "node-fetch": "^2.7.0",
     "react": "^19.2.0",

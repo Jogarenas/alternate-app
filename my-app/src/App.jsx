@@ -187,7 +187,7 @@ Return ONLY the JSON object.`;
 // The proxy is responsible for holding the GEMINI API key (DO NOT put keys in client-side code).
 const callAI = async (systemPrompt, userPrompt, opts = {}) => {
   const payload = {
-    model: opts.model || "gemini-2.5-flash-preview-05-20",
+    model: opts.model || "gemini-2.0-flash",
     system: systemPrompt,
     prompt: userPrompt,
     responseMimeType: opts.responseMimeType || "application/json",
